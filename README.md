@@ -1,6 +1,6 @@
 # Valorant Auto Agent Select
 
-Automatically selects agents in Valorant based on the resolution of your screen. 
+Automatically selects agents in Valorant based on the resolution of your screen. Currently have 24 Agents (Valorant Version 8.05). Uses Valorant user config file to get the current resolution then calculates the necessary co-ordinates of the agent and lock-in button.
 
 ## This script works with any resolution that has an aspect ratio of:
 ### - 16:9
