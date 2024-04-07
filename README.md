@@ -40,8 +40,10 @@ Automatically selects agents in Valorant based on the resolution of your screen.
     ```
 
 3. Follow the on-screen instructions to select an agent and start the auto-clicking process.
-
-4. Press 'a' to start clicking and 's' to stop.
+   
+4. Start search in-game.
+   
+5. Press 'a' to start clicking and hold 's' to stop.
 
 ## Compatibility
 
