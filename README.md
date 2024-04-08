@@ -9,6 +9,20 @@ Automatically selects agents in Valorant based on the resolution of your screen.
 ### - 5:3
 ### - 4:3
 
+## !! Note !!
+### If you have multiple accounts you will need to set the GameUserSettings.ini manually as you may have multiple Config folders
+
+Change on line 125:
+```python
+game_settings_file = find_game_settings_file(valorant_config_path)
+```
+to
+```python
+game_settings_file = "C:\\Users\\{YourUsername}\\AppData\Local\\VALORANT\\Saved\\Config\\{long string of random characters}\\Windows\\GameUserSettings.ini"
+```
+Tip: 
+The Windows folder contains 2 files GameUserSettings.ini and RiotUserSettings.ini to check your account search your in-game username in RiotUserSettings.ini
+
 ## Installation
 
 1. Clone the repository:
