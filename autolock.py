@@ -11,6 +11,7 @@ from rich import box
 # Initialize Rich console
 console = Console()
 
+
 # Dictionary of agents
 agents = {
     "breach": 1,
@@ -39,12 +40,15 @@ agents = {
     "yoru": 24
 }
 
+
 # Global variables for coordinates of agent and lock-in agent
 start_x = None
 start_y = None
 new_increment = None
 lock_in = None
 
+
+# Find the Current Resolution from GameUserSettings.ini file
 def find_resolution_values(file_path):
     resolution_values = {}
     with open(file_path, 'r') as file:
@@ -55,11 +59,15 @@ def find_resolution_values(file_path):
                 resolution_values["ResolutionSizeY"] = int(line.split("=")[1])
     return resolution_values.get("ResolutionSizeX"), resolution_values.get("ResolutionSizeY")
 
+
+# Calculate in-game aspect ratio to match with the correct aspect ratio for scaling
 def calculate_aspect_ratio(resolution_x, resolution_y):
     aspect_ratio = resolution_x / resolution_y
     return aspect_ratio
 
+# To get the correct aspect ratio values to be used for scaling the co-ords correctly
 def get_aspect_ratio_category(aspect_ratio):
+    # 16:9
     if aspect_ratio >= 1.7:
         return {
             "width": 1366,
@@ -69,6 +77,7 @@ def get_aspect_ratio_category(aspect_ratio):
             "lock_in": (680, 520),
             "increment": 60
         }
+    # 5:3
     elif aspect_ratio >= 1.66:
         return {
             "width": 1280,
@@ -78,6 +87,7 @@ def get_aspect_ratio_category(aspect_ratio):
             "lock_in": (640, 520),
             "increment": 60
         }
+    # 16:10
     elif aspect_ratio >= 1.6:
         return {
             "width": 1280,
@@ -87,6 +97,7 @@ def get_aspect_ratio_category(aspect_ratio):
             "lock_in": (640, 540),
             "increment": 60
         }
+    # 4:3
     elif aspect_ratio >= 1.33:
         return {
             "width": 1280,
@@ -96,6 +107,7 @@ def get_aspect_ratio_category(aspect_ratio):
             "lock_in": (640, 650),
             "increment": 75
         }
+    # 5:4
     elif aspect_ratio >= 1.25:
         return {
             "width": 1280,
@@ -108,12 +120,14 @@ def get_aspect_ratio_category(aspect_ratio):
     else:
         return None
 
+# If not manually set in main finds the first instance of GameUserSettings.ini under the \VALORANT\Saved\Config\ folder
 def find_game_settings_file(root_dir):
     for root, dirs, files in os.walk(root_dir):
         if "GameUserSettings.ini" in files:
             return os.path.join(root, "GameUserSettings.ini")
     return None
 
+# Main function
 def main():
     
     global start_x, start_y, new_increment, lock_in
@@ -175,6 +189,8 @@ def main():
             click_flag = False
             break
 
+
+# Calculates the agents co-ords using simple logic checks the row and column of agent and adds the necessary increment for co-ords using the scaled aspect ratio values to get to the agent. 
 def calculate_coordinates(agent_name):
     agent_number = agents.get(agent_name)
     if not agent_number:
@@ -187,12 +203,15 @@ def calculate_coordinates(agent_name):
     else:
         return start_x + (agent_number - 18 - 1) * new_increment, start_y + (new_increment * 2)
 
+
+# Moves mouse 5 pixels left and right then re centres the position to make sure hover is registered
 def wiggle_mouse(position):
     x, y = position
     pyautogui.moveTo(x - 5, y, duration=0.02)  # Move left by 5 pixels
     pyautogui.moveTo(x + 5, y, duration=0.02)  # Move right by 5 pixels
     pyautogui.moveTo(x, y, duration=0.02)      # Return to original position
 
+# Clicks between the agent and the lock-in button time.sleep can be changed but i found 0.03 works well
 def click_between_positions(agent, lock_in, click_flag):
     current_position = agent
     while click_flag:
